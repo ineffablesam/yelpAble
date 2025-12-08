@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+    <string>YelpAble needs access to your camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>YelpAble needs access to your microphone</string>
 </dict>
 </plist>
