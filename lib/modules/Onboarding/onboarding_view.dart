@@ -11,6 +11,7 @@ import 'package:soft_edge_blur/soft_edge_blur.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:yelpable/modules/AbleCam/able_camera_view.dart';
 import 'package:yelpable/modules/Auth/Controller/auth_controller.dart';
+import 'package:yelpable/modules/Auth/auth_view.dart';
 import 'package:yelpable/utils/assets.dart';
 import 'package:yelpable/utils/colors.dart';
 import 'package:yelpable/utils/custom_tap.dart';
@@ -84,6 +85,7 @@ class OnboardingView extends GetView<AuthController> {
               CustomTap(
                 onTap: () {
                   HapticFeedback.heavyImpact();
+                  Get.to(() => AuthView());
                 },
                 child: Container(
                   height: 46.h,

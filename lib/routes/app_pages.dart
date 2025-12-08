@@ -1,5 +1,3 @@
-import 'package:yelpable/modules/Auth/Controller/auth_binding.dart';
-import 'package:yelpable/modules/Auth/auth_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/Home/Controller/home_binding.dart';
@@ -25,10 +23,10 @@ class AppPages {
       page: () => const SplashView(),
       binding: SplashBinding(),
     ),
-    GetPage(
-      name: _Paths.AUTH,
-      page: () => const AuthView(),
-      binding: AuthBinding(),
-    ),
+    // GetPage(
+    //   name: _Paths.AUTH,
+    //   page: () => const AuthView(),
+    //   binding: AuthBinding(),
+    // ),
   ];
 }

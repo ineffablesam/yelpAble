@@ -31,7 +31,6 @@ class SplashView extends GetView<SplashController> {
               vsync: controller,
               duration: composition.duration,
             );
-
             animController.addListener(() {
               final currentTimeMs =
                   (animController.value * composition.duration.inMilliseconds)
@@ -39,7 +38,7 @@ class SplashView extends GetView<SplashController> {
 
               if (!hasVibrated && currentTimeMs >= 1340) {
                 hasVibrated = true;
-                HapticFeedback.selectionClick();
+                HapticFeedback.mediumImpact();
               }
             });
             animController.addStatusListener((status) {

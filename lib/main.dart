@@ -34,11 +34,20 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'First Method',
-          initialRoute: AppPages.INITIAL,
-          getPages: AppPages.routes,
+        return GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            }
+          },
+          child: GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'First Method',
+            initialRoute: AppPages.INITIAL,
+            getPages: AppPages.routes,
+          ),
         );
       },
     );
