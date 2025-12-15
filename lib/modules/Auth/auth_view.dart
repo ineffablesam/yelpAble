@@ -133,48 +133,63 @@ class AuthView extends GetView<AuthController> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: CustomTap(
-                      onTap: () {
-                        HapticFeedback.heavyImpact();
+                      onTap: controller.isLoading.value
+                          ? null
+                          : () {
+                              HapticFeedback.heavyImpact();
 
-                        if (controller.currentStep.value == 0) {
-                          // Step 1: Validate form
-                          final formKey = controller.formKey;
-                          if (formKey.currentState!.validate()) {
-                            // Move to step 2
-                            controller.currentStep.value = 1;
-                          }
-                        } else {
-                          // Step 2: Validate preferences and submit
-                          if (controller.selectedPreferences.isNotEmpty) {
-                            // Submit
-                            controller.doContinue();
-                          } else {
-                            Get.snackbar(
-                              "Required",
-                              "Please select at least one preference",
-                              snackPosition: SnackPosition.BOTTOM,
-                            );
-                          }
-                        }
-                      },
+                              if (controller.currentStep.value == 0) {
+                                // Step 1: Validate form
+                                final formKey = controller.formKey;
+                                if (formKey.currentState!.validate()) {
+                                  // Move to step 2
+                                  controller.currentStep.value = 1;
+                                }
+                              } else {
+                                // Step 2: Validate preferences and submit
+                                if (controller.selectedPreferences.isNotEmpty) {
+                                  // Submit
+                                  controller.doContinue();
+                                } else {
+                                  Get.snackbar(
+                                    "Required",
+                                    "Please select at least one preference",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
+                                }
+                              }
+                            },
                       child: Container(
                         height: 46.h,
                         width: 200.w,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: controller.isLoading.value
+                              ? Colors.grey.shade800
+                              : Colors.black,
                           borderRadius: BorderRadius.circular(30.r),
                         ),
-                        child: Text(
-                          controller.currentStep.value == 0
-                              ? "Continue"
-                              : "Get Started",
-                          style: SFPro.font(
-                            color: Colors.white,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        child: controller.isLoading.value
+                            ? SizedBox(
+                                width: 24.w,
+                                height: 24.h,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 1,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
+                                ),
+                              )
+                            : Text(
+                                controller.currentStep.value == 0
+                                    ? "Continue"
+                                    : "Get Started",
+                                style: SFPro.font(
+                                  color: Colors.white,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                       ),
                     ),
                   ),

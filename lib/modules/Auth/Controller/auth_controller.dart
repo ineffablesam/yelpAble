@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:yelpable/models/user_model.dart';
+import 'package:yelpable/services/user_service.dart';
 import 'package:yelpable/utils/sf_font.dart';
+
+import '../../Layout/layout_view.dart';
 
 class AuthController extends GetxController {
   RxBool isLoading = false.obs;
@@ -25,9 +29,29 @@ class AuthController extends GetxController {
   // form key
   final formKey = GlobalKey<FormState>();
 
+  // User service
+  final UserService _userService = UserService();
+
+  // Current user
+  final Rx<UserModel?> currentUser = Rx<UserModel?>(null);
+
   @override
   void onInit() {
     super.onInit();
+    loadUserFromLocal();
+  }
+
+  // Load user from SharedPreferences
+  Future<void> loadUserFromLocal() async {
+    try {
+      final user = await _userService.getUserLocally();
+      if (user != null) {
+        currentUser.value = user;
+        print("User loaded from local storage: ${user.name}");
+      }
+    } catch (e) {
+      print("Error loading user from local: $e");
+    }
   }
 
   // Pick image from gallery
@@ -155,12 +179,16 @@ class AuthController extends GetxController {
     );
   }
 
-  void doAppleAuth() {}
+  void doAppleAuth() {
+    // TODO: Implement Apple authentication
+  }
 
-  void doGoogleAuth() {}
+  void doGoogleAuth() {
+    // TODO: Implement Google authentication
+  }
 
   // Called when user taps Continue/Get Started
-  void doContinue() {
+  Future<void> doContinue() async {
     print("============================================");
     print("USER REGISTRATION DATA");
     print("============================================");
@@ -172,11 +200,47 @@ class AuthController extends GetxController {
     );
     print("============================================");
 
-    // TODO: Save preferences to user profile or backend here
-    // You can use profileImage.value to upload to backend
+    // Show loading
+    isLoading.value = true;
 
-    // Navigate to main layout
-    // Get.to(() => LayoutView());
+    try {
+      // Create user in Supabase
+      final user = await _userService.createUser(
+        name: nameController.text.trim(),
+        email: emailController.text.trim(),
+        preferences: selectedPreferences.toList(),
+        profileImage: profileImage.value,
+      );
+
+      if (user != null) {
+        currentUser.value = user;
+        // Navigate to main layout
+        Get.offAll(() => LayoutView());
+        print("User created successfully: ${user.id}");
+      } else {
+        debugPrint("User creation failed.");
+      }
+    } catch (e) {
+      print("Error during registration: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Logout method
+  Future<void> logout() async {
+    await _userService.clearUserLocally();
+    currentUser.value = null;
+
+    // Clear form data
+    nameController.clear();
+    emailController.clear();
+    selectedPreferences.clear();
+    profileImage.value = null;
+    currentStep.value = 0;
+
+    // Navigate to auth view
+    // Get.offAll(() => AuthView());
   }
 
   @override

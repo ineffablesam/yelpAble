@@ -49,5 +49,39 @@
     <string>YelpAble needs access to your camera</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>YelpAble needs access to your microphone</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location to show nearby businesses.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app needs access to location to show nearby businesses.</string>
+    <key>AppGroupId</key>
+    <string>$(CUSTOM_GROUP_ID)</string>
+    <key>CFBundleURLTypes</key>
+    	<array>
+    		<dict>
+    			<key>CFBundleTypeRole</key>
+    			<string>Editor</string>
+    			<key>CFBundleURLSchemes</key>
+    			<array>
+    				<string>ShareMedia-$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    			</array>
+    		</dict>
+    	</array>
+
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>To upload photos, please allow permission to access your photo library.</string>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>URL</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.url</string>
+                <string>public.plain-text</string>
+            </array>
+        </dict>
+    </array>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>In order to perform voice-based tasks, this app requires permission to recognize recorded audio.</string>
 </dict>
 </plist>
